@@ -2,6 +2,14 @@ package com.github.ethangodden.datastructure;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
+/**
+ * Interface for a Partition Set (also called disjoint sets, union find, equivalence classes) data structure.
+ * Provides methods to create partitions, merge them, and check if two elements are in the same partition.
+ *
+ * @param <T> Type of elements in the partition set
+ */
 public interface PartitionSet<T> {
     /**
      * Create a new partition with a single element if it is not in an existing partition.
