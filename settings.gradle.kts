@@ -1,1 +1,1 @@
-rootProject.name = "data-structures-and-algorithms"
+rootProject.name = "dsa"
