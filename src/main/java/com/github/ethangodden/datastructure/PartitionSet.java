@@ -1,5 +1,7 @@
 package com.github.ethangodden.datastructure;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface PartitionSet<T> {
     /**
      * Create a new partition with a single element if it is not in an existing partition.
@@ -8,7 +10,7 @@ public interface PartitionSet<T> {
      * @return true if the partition was created, false if it already exists
      * @throws NullPointerException if the element is null
      */
-    boolean createPartition(T e);
+    boolean createPartition(@NotNull T e);
 
     /**
      * Merge the partitions containing the two elements.
@@ -18,7 +20,7 @@ public interface PartitionSet<T> {
      * @return true if the partitions were merged, false if they were already in the same partition
      * @throws NullPointerException if either element is null
      */
-    boolean mergePartitions(T e1, T e2);
+    boolean mergePartitions(@NotNull T e1, @NotNull T e2);
 
     /**
      * Check if two elements are in the same partition.
@@ -28,6 +30,6 @@ public interface PartitionSet<T> {
      * @return true if both elements are in the same partition, false otherwise
      * @throws NullPointerException if either element is null
      */
-    boolean samePartition(T e1, T e2);
+    boolean samePartition(@NotNull T e1, @NotNull T e2);
 }
 

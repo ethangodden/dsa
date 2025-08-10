@@ -1,7 +1,10 @@
 package com.github.ethangodden.datastructure;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public final class TreePartitionSet<T> implements PartitionSet<T> {
     private final Map<T, T> parentMap;
@@ -13,22 +16,15 @@ public final class TreePartitionSet<T> implements PartitionSet<T> {
         this.rankMap = new HashMap<>();
     }
 
-    public boolean createPartition(T e) {
-        if (e == null) {
-            throw new NullPointerException("null element cannot be added to a cluster");
-        }
-
-        if (parentMap.containsKey(e)) {
-            return false; // Element already exists in a partition
-        }
-
-        parentMap.put(e, e);
-        rankMap.put(e, 0);
-        return true;
+    @Override
+    public boolean createPartition(@NotNull T e) {
+        Objects.requireNonNull(e, "null element cannot be added to a cluster");
+        // Check if the element already exists in a partition and it was successfully added
+        return !parentMap.containsKey(e) && parentMap.put(e, e) == null && rankMap.put(e, 0) == null;
     }
 
     @Override
-    public boolean mergePartitions(T e1, T e2) {
+    public boolean mergePartitions(@NotNull T e1, @NotNull T e2) {
         T p1 = findParent(e1);
         T p2 = findParent(e2);
 
@@ -52,14 +48,12 @@ public final class TreePartitionSet<T> implements PartitionSet<T> {
     }
 
     @Override
-    public boolean samePartition(T e1, T e2) {
+    public boolean samePartition(@NotNull T e1, @NotNull T e2) {
         return findParent(e1).equals(findParent(e2));
     }
 
-    private T findParent(T e) {
-        if (e == null) {
-            throw new NullPointerException("null element cannot exist in a partition");
-        }
+    private T findParent(@NotNull T e) {
+        Objects.requireNonNull(e, "null element cannot exist in a partition");
         // Path compression
         if (!parentMap.get(e).equals(e)) {
             parentMap.put(e, findParent(parentMap.get(e)));
