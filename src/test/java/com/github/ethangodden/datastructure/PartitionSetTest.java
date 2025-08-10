@@ -130,35 +130,60 @@ public abstract class PartitionSetTest<T> {
     
     @Test
     public void testComplexMergeScenario() {
-        T[] elements = (T[]) new Object[10];
-        for (int i = 0; i < 10; i++) {
-            elements[i] = createElement(i);
-            partitionSet.createPartition(elements[i]);
-        }
+        // Create individual elements to avoid unsafe cast
+        T e0 = createElement(0);
+        T e1 = createElement(1);
+        T e2 = createElement(2);
+        T e3 = createElement(3);
+        T e4 = createElement(4);
+        T e5 = createElement(5);
+        T e6 = createElement(6);
+        T e7 = createElement(7);
+        T e8 = createElement(8);
+        T e9 = createElement(9);
         
-        partitionSet.mergePartitions(elements[0], elements[1]);
-        partitionSet.mergePartitions(elements[2], elements[3]);
-        partitionSet.mergePartitions(elements[0], elements[3]);
+        // Create partitions for all elements
+        partitionSet.createPartition(e0);
+        partitionSet.createPartition(e1);
+        partitionSet.createPartition(e2);
+        partitionSet.createPartition(e3);
+        partitionSet.createPartition(e4);
+        partitionSet.createPartition(e5);
+        partitionSet.createPartition(e6);
+        partitionSet.createPartition(e7);
+        partitionSet.createPartition(e8);
+        partitionSet.createPartition(e9);
         
-        assertTrue(partitionSet.samePartition(elements[0], elements[1]));
-        assertTrue(partitionSet.samePartition(elements[0], elements[2]));
-        assertTrue(partitionSet.samePartition(elements[0], elements[3]));
-        assertTrue(partitionSet.samePartition(elements[1], elements[2]));
-        assertTrue(partitionSet.samePartition(elements[1], elements[3]));
-        assertTrue(partitionSet.samePartition(elements[2], elements[3]));
+        // Merge some partitions
+        partitionSet.mergePartitions(e0, e1);
+        partitionSet.mergePartitions(e2, e3);
+        partitionSet.mergePartitions(e0, e3);
         
-        assertFalse(partitionSet.samePartition(elements[0], elements[4]));
-        assertFalse(partitionSet.samePartition(elements[1], elements[5]));
+        // Verify first group of merges
+        assertTrue(partitionSet.samePartition(e0, e1));
+        assertTrue(partitionSet.samePartition(e0, e2));
+        assertTrue(partitionSet.samePartition(e0, e3));
+        assertTrue(partitionSet.samePartition(e1, e2));
+        assertTrue(partitionSet.samePartition(e1, e3));
+        assertTrue(partitionSet.samePartition(e2, e3));
         
-        partitionSet.mergePartitions(elements[5], elements[6]);
-        partitionSet.mergePartitions(elements[6], elements[7]);
-        partitionSet.mergePartitions(elements[7], elements[8]);
+        // Verify elements not in the merged partition
+        assertFalse(partitionSet.samePartition(e0, e4));
+        assertFalse(partitionSet.samePartition(e1, e5));
         
-        assertTrue(partitionSet.samePartition(elements[5], elements[8]));
+        // Create another merged group
+        partitionSet.mergePartitions(e5, e6);
+        partitionSet.mergePartitions(e6, e7);
+        partitionSet.mergePartitions(e7, e8);
         
-        partitionSet.mergePartitions(elements[0], elements[8]);
+        // Verify second group of merges
+        assertTrue(partitionSet.samePartition(e5, e8));
         
-        assertTrue(partitionSet.samePartition(elements[0], elements[5]));
-        assertTrue(partitionSet.samePartition(elements[3], elements[8]));
+        // Merge the two groups
+        partitionSet.mergePartitions(e0, e8);
+        
+        // Verify the groups are merged
+        assertTrue(partitionSet.samePartition(e0, e5));
+        assertTrue(partitionSet.samePartition(e3, e8));
     }
 }
