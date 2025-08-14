@@ -3,6 +3,7 @@ package com.github.ethangodden.datastructure;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,4 +62,8 @@ public final class TreePartitionSet<T> implements PartitionSet<T> {
         return parentMap.get(e);
     }
 
+    @Override
+    public @NotNull Iterator<T> iterator() {
+        return parentMap.keySet().iterator();
+    }
 }

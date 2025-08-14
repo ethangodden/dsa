@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <T> Type of elements in the partition set
  */
-public interface PartitionSet<T> {
+public interface PartitionSet<T> extends Iterable<T> {
     /**
      * Create a new partition with a single element if it is not in an existing partition.
      *
